@@ -1,15 +1,13 @@
 <template>
-  <div>
-    <el-button>123</el-button>
-  </div>
+  <router-view></router-view>
 </template>
 <script>
-import { registerAPI } from '@/api/index.js'
+// import { registerAPI } from '@/api/index.js'
 export default {
-  async created () {
-    const res = await registerAPI()
-    console.log(res)
-  }
+  // async created () {
+  //   const res = await registerAPI()
+  //   console.log(res)
+  // }
 }
 </script>
 <style lang="less" scoped>
