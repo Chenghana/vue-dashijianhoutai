@@ -17,13 +17,14 @@
           <el-input v-model="form.repassword" placeholder="请再次确认密码" type="password"></el-input>
         </el-form-item>
         <el-button type="primary" @click="registerFn" class="btn-reg">注册</el-button>
-        <el-link type="info">去登录</el-link>
+        <el-link type="info" @click="$router.push('/login')">去登录</el-link>
       </el-form>
     </div>
   </div>
 </template>
 
 <script>
+import { registerAPI } from '@/api/index.js'
 // 经验：前端绑定数据对象“属性名”，可以直接给要调用的功能接口的“参数名”保持一致
 // 好处：可以直接把前端对象（带着同名属性和前端的值）发给后台
 export default {
@@ -74,7 +75,24 @@ export default {
   },
   methods: {
     registerFn () {
-
+      // js兜底校验
+      this.$refs.form.validate(async valid => {
+        if (valid) {
+          // 通过了校验,拿到绑定数据
+          console.log(this.form)
+          // 1.把axios数据返回的数据对象里data字段对应的值保存在res上
+          const { data: res } = await registerAPI(this.form)
+          console.log(res)
+          // 2.注册失败
+          if (res.code !== 0) return this.$message.error(res.message)
+          // 3.注册成功
+          this.$message.success(res.message)
+          // 4.跳转到登录页面
+          this.$router.push('/login')
+        } else {
+          return false // 阻止默认提交
+        }
+      })
     }
   }
 }
